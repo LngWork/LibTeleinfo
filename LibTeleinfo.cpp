@@ -210,9 +210,9 @@ ValueList * TInfo::valueAdd(char * name, char * value, uint8_t checksum, uint8_t
         me = me->next;
 
         // Check if we already have this LABEL
-        if (strncmp(me->name, name, lgname) == 0) {
+        if (strncmp(me->name, name, lgname+1) == 0) {
           // Already got also this value, return US
-          if (strncmp(me->value, value, lgvalue) == 0) {
+          if (strncmp(me->value, value, lgvalue+1) == 0) {
             *flags |= TINFO_FLAGS_EXIST;
             me->flags = *flags;
             return ( me );
@@ -223,7 +223,7 @@ ValueList * TInfo::valueAdd(char * name, char * value, uint8_t checksum, uint8_t
             // Do we have enought space to hold new value ?
             if (strlen(me->value) >= lgvalue ) {
               // Copy it
-              strncpy(me->value, value , lgvalue );
+              strncpy(me->value, value , lgvalue+1 );
               me->checksum = checksum ;
 
               // That's all
@@ -362,7 +362,7 @@ boolean TInfo::valueRemove(char * name)
       me = me->next;
 
       // found ?
-      if (strncmp(me->name, name, lgname) == 0) {
+      if (strncmp(me->name, name, lgname+1) == 0) {
         // indicate our parent node that the next node
         // is not us anymore but the next we have
         parNode->next = me->next;
@@ -388,7 +388,7 @@ Input   : Pointer to the label name
           pointer to the value where we fill data 
 Output  : pointer to the value where we filled data NULL is not found
 ====================================================================== */
-char * TInfo::valueGet(char * name, char * value)
+char * TInfo::valueGet(const char * name, char * value)
 {
   // Get our linked list 
   ValueList * me = &_valueslist;
@@ -404,12 +404,12 @@ char * TInfo::valueGet(char * name, char * value)
       me = me->next;
 
       // Check if we match this LABEL
-      if (strncmp(me->name, name, lgname) == 0) {
+      if (strncmp(me->name, name, lgname+1) == 0) {
         // this one has a value ?
         if (me->value) {
           // copy to dest buffer
           uint8_t lgvalue = strlen(me->value);
-          strncpy(value, me->value , lgvalue );
+          strncpy(value, me->value , lgvalue+1 );
           return ( value );
         }
       }
