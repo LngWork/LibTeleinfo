@@ -117,7 +117,7 @@ class TInfo
     ValueList * addCustomValue(char * name, char * value, uint8_t * flags);
     ValueList * getList(void);
     uint8_t     valuesDump(void);
-    char *      valueGet(char * name, char * value);
+    char *      valueGet(const char * name, char * value);
     boolean     listDelete();
 
   private:
